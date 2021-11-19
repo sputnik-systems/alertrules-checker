@@ -1,0 +1,17 @@
+name: Alert rules check
+description: Execute simple bin for checking given alert rules
+author: preved911
+inputs:
+  path:
+    description: Path to proccess.
+    default: .
+  subcommand:
+    description: Which template format should be used.
+    default: kustomize
+runs:
+  using: docker
+  image: docker://sputniksystemsorg/alertrules-checker:v0.0.1
+  entrypoint: /checker
+  args:
+    - ${{ inputs.subcommand }}
+    - ${{ inputs.path }}
