@@ -25,10 +25,15 @@ func Validate(b []byte) interface{} {
 	}
 
 	var errs utils.ErrorGroup
+	names := make(map[string]struct{})
 	for _, group := range groups {
 		if err := group.Validate(true, true); err != nil {
 			errs.Add(err)
 		}
+		if _, ok := names[group.Name]; ok {
+			errs.Add(fmt.Errorf("group %q duplicate", group.Name))
+		}
+		names[group.Name] = struct{}{}
 	}
 
 	return errs
