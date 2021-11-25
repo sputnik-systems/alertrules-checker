@@ -13,7 +13,7 @@ inputs:
     default: VMRule
 runs:
   using: docker
-  image: docker://sputniksystemsorg/alertrules-checker:v0.0.1
+  image: docker://sputniksystemsorg/alertrules-checker:v0.0.2
   entrypoint: /checker
   args:
     - ${{ inputs.subcommand }}
