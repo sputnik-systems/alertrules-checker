@@ -1582,7 +1582,9 @@ github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndr
 github.com/posener/complete v1.2.3/go.mod h1:WZIdtGGp+qx0sLrYKtIRAruyNpv6hFCicSgv7Sy7s/s=
 github.com/pquerna/cachecontrol v0.0.0-20171018203845-0dec1b30a021/go.mod h1:prYjPmNq4d1NPVmpShWobRqXY3q7Vp+80DqgxxUrUIA=
 github.com/prometheus-community/prom-label-proxy v0.4.0/go.mod h1:iIXJXLAhMTxgTo85xMgmVOYMrteautO4loWdEBdQdSE=
+github.com/prometheus-operator/prometheus-operator v0.52.0 h1:LoL39fUfv5tJzmkt3FrO/likO2vTqOH/kPt4VKEvKNs=
 github.com/prometheus-operator/prometheus-operator v0.52.0/go.mod h1:BYMnFqOzWUzcrHTQG6LH/XG7pYTLESTuAvhw1UzpbVA=
+github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.52.0 h1:ANs+jxSJz7Xylkw9GGrN7IFaVrEjhDyeRqikccPXbW8=
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.52.0/go.mod h1:f7HML3SGY4Bf10YMdSWKUf2BdIIzQqlAvYh84px05BQ=
 github.com/prometheus-operator/prometheus-operator/pkg/client v0.52.0/go.mod h1:UBZoBY1aWYbnT2ZjgqjHeuMNdakQOfkTBJpb1PcxWqg=
 github.com/prometheus/alertmanager v0.18.0/go.mod h1:WcxHBl40VSPuOaqWae6l6HpnEOVRIycEJ7i9iYkadEE=
@@ -1890,6 +1892,7 @@ github.com/valyala/gozstd v1.14.1/go.mod h1:y5Ew47GLlP37EkTB+B4s7r6A5rdaeB7ftbl9
 github.com/valyala/histogram v1.1.2/go.mod h1:CZAr6gK9dbD7hYx2s8WSPh0p5x5wETjC+2b3PJVtEdg=
 github.com/valyala/histogram v1.2.0 h1:wyYGAZZt3CpwUiIb9AU/Zbllg1llXyrtApRS815OLoQ=
 github.com/valyala/histogram v1.2.0/go.mod h1:Hb4kBwb4UxsaNbbbh+RRz8ZR6pdodR57tzWUS3BUzXY=
+github.com/valyala/quicktemplate v1.7.0 h1:LUPTJmlVcb46OOUY3IeD9DojFpAVbsG+5WFTcjMJzCM=
 github.com/valyala/quicktemplate v1.7.0/go.mod h1:sqKJnoaOF88V07vkO+9FL8fb9uZg/VPSJnLYn+LmLk8=
 github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
 github.com/vektah/gqlparser v1.1.2/go.mod h1:1ycwN7Ij5njmMkPPAOaRFY4rET2Enx7IkVv3vaXspKw=
