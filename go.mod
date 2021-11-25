@@ -22,7 +22,7 @@ require (
 require (
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
-	github.com/VictoriaMetrics/VictoriaMetrics v1.68.0 // indirect
+	github.com/VictoriaMetrics/VictoriaMetrics v1.68.0
 	github.com/VictoriaMetrics/metrics v1.18.0 // indirect
 	github.com/VictoriaMetrics/metricsql v0.27.0 // indirect
 	github.com/alecthomas/units v0.0.0-20210927113745-59d0afb8317a // indirect
@@ -66,12 +66,13 @@ require (
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.52.0
 	github.com/prometheus/client_golang v1.11.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/common/sigv4 v0.1.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
-	github.com/spf13/cobra v1.2.1 // indirect
+	github.com/spf13/cobra v1.2.1
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/uber/jaeger-client-go v2.29.1+incompatible // indirect

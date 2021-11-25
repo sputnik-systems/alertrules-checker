@@ -8,10 +8,14 @@ inputs:
   subcommand:
     description: Which template format should be used.
     default: kustomize
+  rule_type:
+    description: Which rule type should be used.
+    default: VMRule
 runs:
   using: docker
   image: docker://sputniksystemsorg/alertrules-checker:v0.0.1
   entrypoint: /checker
   args:
     - ${{ inputs.subcommand }}
+    - --rule-type=${{ inputs.rule_type }}
     - ${{ inputs.path }}

@@ -1,14 +1,25 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
 
-	vm "github.com/VictoriaMetrics/operator/api/v1beta1"
-	"github.com/ghodss/yaml"
-	"github.com/prometheus/prometheus/model/rulefmt"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/kustomize/api/krusty"
 	"sigs.k8s.io/kustomize/kyaml/filesys"
+
+	"github.com/sputnik-systems/alertrules-checker/internal/github"
+	prom "github.com/sputnik-systems/alertrules-checker/internal/prometheus"
+	"github.com/sputnik-systems/alertrules-checker/internal/utils"
+	vm "github.com/sputnik-systems/alertrules-checker/internal/victoriametrics"
+)
+
+var (
+	ErrMarshal   = errors.New("failed to marshal object")
+	ErrUnmarshal = errors.New("failed to unmarshal object")
+
+	ruleType string
 )
 
 func main() {
@@ -25,6 +36,8 @@ func main() {
 
 	rootCmd.AddCommand(kustomizeCmd)
 
+	rootCmd.PersistentFlags().StringVar(&ruleType, "rule-type", "VMRule", "Alert rules definition kubernetes object type (VMRule or PrometheusRule)")
+
 	log.SetFlags(0)
 
 	if err := rootCmd.Execute(); err != nil {
@@ -39,13 +52,13 @@ func kustomize(cmd *cobra.Command, args []string) {
 
 	k := krusty.MakeKustomizer(krusty.MakeDefaultOptions())
 
-	var warnCount uint
+	var events []*github.Event
 	for _, path := range args {
 		m, err := k.Run(filesys.MakeFsOnDisk(), path)
 		if err != nil {
-			log.Printf("::warning title=%s ::failed to generate templates from given path: %s", path, err)
-
-			warnCount++
+			event := github.NewEvent("warning",
+				fmt.Sprintf("failed to generate templates from given path %s: %s", path, err))
+			events = append(events, event)
 		}
 
 		for _, resource := range m.Resources() {
@@ -53,39 +66,44 @@ func kustomize(cmd *cobra.Command, args []string) {
 
 			b, err := resource.AsYAML()
 			if err != nil {
-				log.Printf("::warning title=%s ::failed to get resource as yaml: %s", name, err)
-
-				warnCount++
+				event := github.NewEvent("warning",
+					fmt.Sprintf("failed to get resource %s as yaml: %s", name, err))
+				events = append(events, event)
 			}
 
-			var rule vm.VMRule
-			if err := yaml.Unmarshal(b, &rule); err != nil {
-				log.Printf("::warning title=%s ::failed to unmarshal resource: %s", name, err)
-
-				warnCount++
+			var perrs interface{}
+			switch ruleType {
+			case "VMRule":
+				perrs = vm.Validate(b)
+			case "PrometheusRule":
+				perrs = prom.Validate(b)
 			}
 
-			b, err = yaml.Marshal(rule.Spec)
-			if err != nil {
-				log.Printf("::warning title=%s ::failed to marshal resource into rule file: %s", name, err)
+			if err, ok := perrs.(error); ok {
+				event := github.NewEvent("warning", err.Error())
+				events = append(events, event)
+			} else if errgr, ok := perrs.(utils.ErrorGroup); ok {
+				if errgr.Count() > 0 {
+					event := github.NewEvent("warning",
+						fmt.Sprintf("failed to parse resource with %d errors", errgr.Count())).WithTitle(name)
+					events = append(events, event)
 
-				warnCount++
-			}
-
-			_, errs := rulefmt.Parse(b)
-			if len(errs) != 0 {
-				log.Printf("::warning title=%s ::failed to parse resource with %d errors", name, len(errs))
-
-				warnCount++
-
-				for index, err := range errs {
-					log.Printf("::warning title=%s ::resource error #%d: %s", name, index+1, err)
+					for index, err := range errgr.List() {
+						event := github.NewEvent("warning",
+							fmt.Sprintf("resource error #%d: %s", index+1, err))
+						events = append(events, event)
+					}
 				}
 			}
+
 		}
 	}
 
-	if warnCount > 0 {
-		log.Fatalf("::error ::checks failed with %d warnings", warnCount)
+	for _, event := range events {
+		log.Println(event)
+	}
+
+	if len(events) > 0 {
+		log.Fatalf("::error ::checks failed with %d warnings", len(events))
 	}
 }
