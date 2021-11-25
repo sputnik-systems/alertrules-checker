@@ -93,6 +93,8 @@ func getConfigRules(ors []vmoperator.Rule) (rs []config.Rule, err error) {
 			r.For = vmutils.NewPromDuration(d)
 		}
 
+		r.ID = config.HashRule(r)
+
 		rs = append(rs, r)
 	}
 
