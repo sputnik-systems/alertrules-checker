@@ -90,7 +90,7 @@ func kustomize(cmd *cobra.Command, args []string) {
 
 					for index, err := range errgr.List() {
 						event := github.NewEvent("warning",
-							fmt.Sprintf("resource error #%d: %s", index+1, err))
+							fmt.Sprintf("resource error #%d: %s", index+1, err)).WithTitle(name)
 						events = append(events, event)
 					}
 				}
